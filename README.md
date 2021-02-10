@@ -1,3 +1,7 @@
+[![MCHP](images/microchip.png)](https://www.microchip.com)
+
+# Waveform generation using DAC
+
 # Introduction  
 The Digital-to-Analog Converter (DAC) converts a digital value to an analog voltage. The DAC module offers flexible input source selection, provision to route output to other peripherals such as analog comparator and Analog to Digital converter, and configurable registers set.
 
@@ -5,6 +9,12 @@ DAC has a flexible option to choose both positive as well as negative reference 
 
 This Xpress example discusses how DAC peripherals from PICQ10, can be used to generate reference voltage and different signals.
 
+# Related Documents / Useful Links
+
+- [TB3238 - 5-Bit Digital-to-Analog Converter](https://www.microchip.com/wwwappnotes/appnotes.aspx?appnote=en1001182)
+- [PIC18-Q10 Product Family Page](https://www.microchip.com/design-centers/8-bit/pic-mcus/device-selection/pic18f-q10-product-family)
+- [PIC18F47Q10 Data Sheet](http://ww1.microchip.com/downloads/en/DeviceDoc/40002043D.pdf)
+- [PIC18F47Q10 Code Examples on GitHub](https://github.com/microchip-pic-avr-examples?q=pic18f47q10-cnano)
 
 # Reference Voltage and Waveform Generation Using DAC
 The signals generated in this example are “Sine wave, Triangular wave, Square wave, Sawtooth wave, and constant (reference) voltage signals”. The digital Look Up Table (LUT) is created and fed into DAC input to generate the corresponding signal.  
@@ -20,7 +30,7 @@ The signals generated in this example are “Sine wave, Triangular wave, Square 
 
 The following figure 1 shows an overview of the Signal Generator Example.
 
-![](https://i.imgur.com/zFBYrdP.jpg)
+![Application_block_diagram](images/Application_block_diagram.jpg)
 
 **Figure 1: Application Block Diagram**
 
@@ -39,33 +49,44 @@ This example generates the reference voltage 1 at power up, and the signal outpu
 
 Operation of this example is discussed in following section.
 
+# Hardware used
+* [PIC18F47Q10 Curiosity nano evaluation board](https://www.microchip.com/Developmenttools/ProductDetails/DM182029)
+
+With full program and debug capabilities, the PIC18F47Q10 Curiosity Nano evaluation kit offers complete support for the new design. With the award-winning MPLAB X integrated development platform and MPLAB Code Configurator (MCC), the kit provides access to the Intelligent analog and Core Independent Peripherals on the PIC18F47Q10. Figure 2 shows the PIC18F47Q10 Curiosity Nano board.
+
+![PIC18F47Q10_Curiosity_Nano_board](images/PIC18F47Q10_Curiosity_Nano_board.jpg)
+
+**Figure 2: PIC18F47Q10 Curiosity Nano board**
+		
 # Software Tools
 Following Microchip’s free IDE, compiler and graphical code generators are used for the application firmware development.
 
-* MPLAB X IDE v5.30
-* XC8 Compiler v2.10
-* MCC Code Configurator v3.85.1
+* [MPLAB® X IDE v5.30](http://www.microchip.com/mplab/mplab-x-ide)
+* [XC8 Compiler v2.10](http://www.microchip.com/mplab/compilers)
+* [MPLAB® Code Configurator (MCC) v3.85.1](https://www.microchip.com/mplab/mplab-code-configurator)
+* [MCC Device Libraries PIC10 / PIC12 / PIC16 / PIC18  MCUs v1.78.0](https://www.microchip.com/mplab/mplab-code-configurator)
+* [Microchip PIC18F-Q Series Device Support 1.3.89](https://packs.download.microchip.com/)
 
 # Hardware Setup
-The following figures (Figure 2.1 and Figure 2.2) shows the hardware connections/details.
+The following figures (Figure 3.1 and Figure 3.2) shows the hardware connections/details.
 
-![](https://i.imgur.com/b0nkWlG.jpg)
+![Application_hardware_setup_front_view](images/Application_hardware_setup_front_view.jpg)
 
-**Figure 2.1: Application Hardware Setup, Front View{**																		
+**Figure 3.1: Application Hardware Setup, Front View{**																		
 
-![](https://i.imgur.com/0lNUV3p.jpg)
+![Application_hardware_setup_back_view](images/Application_hardware_setup_back_view.jpg)
 
-**Figure 2.2: Application Hardware Setup, Rear View**
+**Figure 3.2: Application Hardware Setup, Rear View**
 # Peripheral configurations using MCC
 ## ->  System configuration
 
 System configuration in MCC is used for Microcontroller oscillator configuration, PLL, Watchdog timer and low voltage programming settings. In this example internal oscillator of 4MHz frequency with clock divider 1 is used as a system clock and the Watchdog timer is disabled.
 
-The following figure 3 shows the system configuration settings in MCC.
+The following figure 4 shows the system configuration settings in MCC.
 
-![](https://i.imgur.com/AJqnfon.png)
+![System_configuration_using_MCC](images/System_configuration_using_MCC.png)
 
- **Figure 3: System Configuration using MCC**
+ **Figure 4: System Configuration using MCC**
 
 ## -> DAC configuration
 The Digital to Analog Convertor module is used to convert digital Look Up Table into analog signal. DAC is configured as follows.  
@@ -75,71 +96,71 @@ The Digital to Analog Convertor module is used to convert digital Look Up Table 
 * DAC Output                            - DAC1OUT1 pin of Microcontroller  
 * DAC Output Pin                     - RA2
 
-The following figure 4 shows the DAC configuration using MCC.
+The following figure 5 shows the DAC configuration using MCC.
 
-![](https://i.imgur.com/OorEoCx.png)
+![DAC_configuration_using_MCC](images/DAC_configuration_using_MCC.png)
 
-**Figure 4: DAC Configuration using MCC**
+**Figure 5: DAC Configuration using MCC**
 
 ## 	-> Pin Mapping				
-The I/O pin mapping of the PIC18F47Q10 MCU for DAC interface and Curiosity Nano on board LED is shown in the following figure 5.
+The I/O pin mapping of the PIC18F47Q10 MCU for DAC interface and Curiosity Nano on board LED is shown in the following figure 6.
 
-![](https://i.imgur.com/7wXSO1A.png)
+![Pin_module_settings_in_MCC](images/Pin_module_settings_in_MCC.png)
 
-**Figure 5: Pin Module Settings in MCC**		
+**Figure 6: Pin Module Settings in MCC**		
 
 The on-board switch SW0 on the Curiosity Nano board is connected to PE2.  As external interrupt configuration is not possible on pin PE2, pin RC2 is configured as Interrupt on Change (IOC) and RC2 is shorted to RE2 using external jumper for detecting button press event using IOC feature.
 
 # Operation
 
-* 	Setup the hardware, as per Hardware Setup (Refer Figure 2.1 and 2.2).
+* 	Setup the hardware, as per Hardware Setup (Refer Figure 3.1 and 3.2).
 * 	Connect the pins RE2 and RC2 using the jumper.
 * 	Connect RA2 (DAC1OUT1 Pin) to the positive terminal of the Scope (DSO/Oscilloscope) and connect GND (CNANO board ground pin) to GND terminal of scope.  
 * 	Power on the CNANO board by connecting the micro USB cable from micro USB socket (Micro USB Connector) on the CNANO board to the PC USB socket.
 * 	The Curiosity Nano board should appear as a Mass Storage Device after connecting to the PC.
 *  Click on **Make and program device**.
 
-	![](https://i.imgur.com/N2eSOtH.png)
+![Programming_the_device](images/Programming_the_device.png)
 
-	**Figure 6: Programing the device**
+**Figure 7: Programing the device**
 *   IDE generates the .hex file, save the file in local PC.
 *   Drag the .hex from the downloads section and drop the file on to the Curiosity drive. This should program the device.
 * 	Turn on the Oscilloscope.
 * 	Observe the default Constant Signal (Reference Voltage 1.6V) on the Oscilloscope screen.
 
-![](https://i.imgur.com/62ykDJU.png)
+![Generated_reference_voltage_signal_on_oscilloscope_screen](images/Generated_reference_voltage_signal_on_oscilloscope_screen.png)
 
-**Figure 7: Generated Reference voltage (1.6V) Signal on Oscilloscope screen**
+**Figure 8: Generated Reference voltage (1.6V) Signal on Oscilloscope screen**
 
 * 	Press on board button (SW0) to change the generated signal and observe the constant 3.196 volts signal on the Oscilloscope screen.
 
-![](https://i.imgur.com/DvoCjDQ.png)
+![Generated_constant_voltage_signal_on_oscilloscope_screen](images/Generated_constant_voltage_signal_on_oscilloscope_screen.png)
 
- **Figure 8: Generated Constant voltage (3.196V) Signal on Oscilloscope screen**
+ **Figure 9: Generated Constant voltage (3.196V) Signal on Oscilloscope screen**
 
 * 	Press on board button (SW0) to change the generated signal and observe the Sine wave on the Oscilloscope screen. 	
 
-![](https://i.imgur.com/7ruiWPF.png)
+![Generated_sine_wave_on_oscillosocope](images/Generated_sine_wave_on_oscillosocope.png)
 
-**Figure 9: Generated Sine Wave on Oscilloscope screen**
+**Figure 10: Generated Sine Wave on Oscilloscope screen**
 
 * 	Press on board button (SW0) to change the generated signal and observe the Triangular wave on the Oscilloscope screen. 								
 
-![](https://i.imgur.com/vskitV2.png)
+![Generated_triangle_wave_on_oscilloscope](images/Generated_triangle_wave_on_oscilloscope.png)
 
-**Figure 10: Generated Triangle Wave on Oscilloscope screen**
+**Figure 11: Generated Triangle Wave on Oscilloscope screen**
 
 * 	Press on board button (SW0) to change the generated signal and observe the Square wave on the Oscilloscope screen.
 
-![](https://i.imgur.com/ObnkreO.png)
+![Generated_square_wave_on_oscilloscope](images/Generated_square_wave_on_oscilloscope.png)
 
-**Figure 11: Generated Square Wave on Oscilloscope screen**
+**Figure 12: Generated Square Wave on Oscilloscope screen**
 
 * 	Press on board button (SW0) to change the generated signal and observe the Saw tooth wave on the Oscilloscope screen. 						
 
-![](https://i.imgur.com/ry0mitv.png)
+![Generated_sawtooth_wave_on_oscilloscope](images/Generated_sawtooth_wave_on_oscilloscope.png)
 
-**Figure 12: Generated Sawtooth Wave on Oscilloscope screen**
+**Figure 13: Generated Sawtooth Wave on Oscilloscope screen**
 
 * 	Press on board button (SW0) to change the generated signal and observe the default signal Sine wave on the Oscilloscope screen.
 * 	Cycle is repeated, once six signals are generated and displayed.
