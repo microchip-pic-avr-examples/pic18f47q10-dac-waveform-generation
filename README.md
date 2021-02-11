@@ -11,10 +11,10 @@ This Xpress example discusses how DAC peripherals from PICQ10, can be used to ge
 
 # Related Documents / Useful Links
 
-- [TB3238 - 5-Bit Digital-to-Analog Converter](https://www.microchip.com/wwwappnotes/appnotes.aspx?appnote=en1001182)
+- [TB3238 - 5-Bit Digital-to-Analog Converter](https://www.microchip.com/90003238)
 - [PIC18-Q10 Product Family Page](https://www.microchip.com/design-centers/8-bit/pic-mcus/device-selection/pic18f-q10-product-family)
-- [PIC18F47Q10 Data Sheet](http://ww1.microchip.com/downloads/en/DeviceDoc/40002043D.pdf)
-- [PIC18F47Q10 Code Examples on GitHub](https://github.com/microchip-pic-avr-examples?q=pic18f47q10-cnano)
+- [PIC18F47Q10 Data Sheet](https://www.microchip.com/40002043)
+- [PIC18F47Q10 Code Examples on GitHub](https://github.com/microchip-pic-avr-examples?q=pic18f47q10)
 
 # Reference Voltage and Waveform Generation Using DAC
 The signals generated in this example are “Sine wave, Triangular wave, Square wave, Sawtooth wave, and constant (reference) voltage signals”. The digital Look Up Table (LUT) is created and fed into DAC input to generate the corresponding signal.  
