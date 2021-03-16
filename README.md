@@ -38,7 +38,7 @@ The Signal Generator example is implemented using Curiosity Nano board with PIC1
 
 The onboard push button (SW0) is used to switch between the Constant voltage and various waveforms.
 
-This example generates the reference voltage at power up, and the signal outputs will be changed after each switch press as per following sequence
+This example generates the reference voltage at power up, and the signal output will be changed after each switch press as per following sequence
 
 1.	Reference voltage 1.6V (on Power up)
 2.	Reference voltage 3V
@@ -97,6 +97,7 @@ Click on the Configuration Bits tab under Project Resources → System tab for c
 
 Select "WDT Operating Mode" from CONFIG3L register as "WDT Disabled" to disable the watchdog timer.
 
+## ->  Configure Configuration Bits
 ![configuration_bits](images/configuration_bits_wdt.png)
 
  **Figure 5: Configuration Bits**
@@ -126,6 +127,7 @@ Figure 7 shows the DAC configuration using MCC.
 
 ## ->  Pin Configuration
 The I/O pin mapping of the PIC18F47Q10 MCU for the DAC and on-board LED is shown in the Figure 8.
+
 Configurations to be done in the Pin Manager grid view window:
 * Pin RA2 will be selected as DAC1OUT1 output pin.
 * Select pins RE2 and RC2 as input pins. On-board switch SW0 is connected to pin RE2.
