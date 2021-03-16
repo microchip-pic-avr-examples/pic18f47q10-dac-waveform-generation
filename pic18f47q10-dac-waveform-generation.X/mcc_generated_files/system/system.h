@@ -1,3 +1,24 @@
+/**
+  @Generated CCL Header File
+
+  @Company:
+    Microchip Technology Inc.
+
+  @File Name:
+    system.h
+
+  @Summary:
+    This is the system.h file generated using CCL
+
+  @Description:
+    This header file provides implementations for driver APIs for all modules selected in the GUI.
+    Generation Information :
+        Driver Version    :  2.00
+    The generated drivers are tested against the following:
+        Compiler          :  XC8 v2.20
+        MPLAB             :  MPLAB X 5.40
+*/
+
 /*
 Copyright (c) [2012-2020] Microchip Technology Inc.  
 
@@ -31,38 +52,33 @@ Copyright (c) [2012-2020] Microchip Technology Inc.
     third party licenses prohibit any of the restrictions described here, 
     such restrictions will not apply to such third party software.
 */
-#include "mcc_generated_files/system/system.h"
-#include "dac_application.h"
-/*
-    Main application
+
+#ifndef SYSTEM_H
+#define	SYSTEM_H
+#include <xc.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include <conio.h>
+#include "config_bits.h"
+#include "../system/clock.h"
+#include "../dac/dac1.h"
+#include "../system/interrupt.h"
+#include "../system/pins.h"
+
+/**
+ * @Param
+    none
+ * @Returns
+    none
+ * @Description
+    Initializes the device to the default states configured in the
+ *                  MCC GUI
+ * @Example
+    SYSTEM_Initialize(void);
+ */
+void SYSTEM_Initialize(void);
+
+#endif	/* SYSTEM_H */
+/**
+ End of File
 */
-
-int main(void)
-{
-    SYSTEM_Initialize();
-    
-    // If using interrupts in PIC18 High/Low Priority Mode you need to enable the Global High and Low Interrupts
-    // If using interrupts in PIC Mid-Range Compatibility Mode you need to enable the Global and Peripheral Interrupts
-    // Use the following macros to:
-
-    // Enable the Global Interrupts
-    INTERRUPT_GlobalInterruptEnable();
-
-    // Disable the Global Interrupts
-    //INTERRUPT_GlobalInterruptDisable();
-
-    // Enable the Peripheral Interrupts
-    INTERRUPT_PeripheralInterruptEnable();
-
-    // Disable the Peripheral Interrupts
-    //INTERRUPT_PeripheralInterruptDisable();
-    
-    // Setting default interrupt as custom interrupt handler 
-    RC2_SetInterruptHandler(UserInterruptHandler);
-    
-    while (1)
-    {
-      WaveGenerator();   //Main function to generate waves 
-      
-    }
-}

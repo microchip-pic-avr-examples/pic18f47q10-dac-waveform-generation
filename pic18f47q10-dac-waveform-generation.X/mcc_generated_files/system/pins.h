@@ -1,24 +1,21 @@
 /**
-  @Generated Pin Manager Header File
+  Generated Pins header File
 
-  @Company:
+  Company:
     Microchip Technology Inc.
 
-  @File Name:
-    pin_manager.h
+  File Name:
+    pins.h
 
-  @Summary:
-    This is the Pin Manager file generated using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+  Summary:
+    This is generated driver header for pins. 
 
-  @Description
-    This header file provides APIs for driver for .
-    Generation Information :
-        Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.78
-        Device            :  PIC18F47Q10
-        Driver Version    :  2.11
-    The generated drivers are tested against the following:
-        Compiler          :  XC8 2.05 and above
-        MPLAB 	          :  MPLAB X 5.20	
+  Description:
+    This header file provides APIs for all pins selected in the GUI.
+
+  Generation Information:
+    Driver Version:  3.0.0
+
 */
 
 /*
@@ -44,8 +41,8 @@
     SOFTWARE.
 */
 
-#ifndef PIN_MANAGER_H
-#define PIN_MANAGER_H
+#ifndef PINS_H
+#define PINS_H
 
 /**
   Section: Included Files
@@ -65,19 +62,27 @@
 #define PULL_UP_ENABLED      1
 #define PULL_UP_DISABLED     0
 
-// get/set RA2 procedures
-#define RA2_SetHigh()            do { LATAbits.LATA2 = 1; } while(0)
-#define RA2_SetLow()             do { LATAbits.LATA2 = 0; } while(0)
-#define RA2_Toggle()             do { LATAbits.LATA2 = ~LATAbits.LATA2; } while(0)
-#define RA2_GetValue()              PORTAbits.RA2
-#define RA2_SetDigitalInput()    do { TRISAbits.TRISA2 = 1; } while(0)
-#define RA2_SetDigitalOutput()   do { TRISAbits.TRISA2 = 0; } while(0)
-#define RA2_SetPullup()             do { WPUAbits.WPUA2 = 1; } while(0)
-#define RA2_ResetPullup()           do { WPUAbits.WPUA2 = 0; } while(0)
-#define RA2_SetAnalogMode()         do { ANSELAbits.ANSELA2 = 1; } while(0)
-#define RA2_SetDigitalMode()        do { ANSELAbits.ANSELA2 = 0; } while(0)
+// get/set RA2 aliases
+#define IO_RA2_TRIS                 TRISAbits.TRISA2
+#define IO_RA2_LAT                  LATAbits.LATA2
+#define IO_RA2_PORT                 PORTAbits.RA2
+#define IO_RA2_WPU                  WPUAbits.WPUA2
+#define IO_RA2_OD                   ODCONAbits.ODCA2
+#define IO_RA2_ANS                  ANSELAbits.ANSELA2
+#define IO_RA2_SetHigh()            do { LATAbits.LATA2 = 1; } while(0)
+#define IO_RA2_SetLow()             do { LATAbits.LATA2 = 0; } while(0)
+#define IO_RA2_Toggle()             do { LATAbits.LATA2 = ~LATAbits.LATA2; } while(0)
+#define IO_RA2_GetValue()           PORTAbits.RA2
+#define IO_RA2_SetDigitalInput()    do { TRISAbits.TRISA2 = 1; } while(0)
+#define IO_RA2_SetDigitalOutput()   do { TRISAbits.TRISA2 = 0; } while(0)
+#define IO_RA2_SetPullup()          do { WPUAbits.WPUA2 = 1; } while(0)
+#define IO_RA2_ResetPullup()        do { WPUAbits.WPUA2 = 0; } while(0)
+#define IO_RA2_SetPushPull()        do { ODCONAbits.ODCA2 = 0; } while(0)
+#define IO_RA2_SetOpenDrain()       do { ODCONAbits.ODCA2 = 1; } while(0)
+#define IO_RA2_SetAnalogMode()      do { ANSELAbits.ANSELA2 = 1; } while(0)
+#define IO_RA2_SetDigitalMode()     do { ANSELAbits.ANSELA2 = 0; } while(0)
 
-// get/set IO_RC2 aliases
+// get/set RC2 aliases
 #define IO_RC2_TRIS                 TRISCbits.TRISC2
 #define IO_RC2_LAT                  LATCbits.LATC2
 #define IO_RC2_PORT                 PORTCbits.RC2
@@ -97,7 +102,7 @@
 #define IO_RC2_SetAnalogMode()      do { ANSELCbits.ANSELC2 = 1; } while(0)
 #define IO_RC2_SetDigitalMode()     do { ANSELCbits.ANSELC2 = 0; } while(0)
 
-// get/set LED aliases
+// get/set RE0 aliases
 #define LED_TRIS                 TRISEbits.TRISE0
 #define LED_LAT                  LATEbits.LATE0
 #define LED_PORT                 PORTEbits.RE0
@@ -117,7 +122,7 @@
 #define LED_SetAnalogMode()      do { ANSELEbits.ANSELE0 = 1; } while(0)
 #define LED_SetDigitalMode()     do { ANSELEbits.ANSELE0 = 0; } while(0)
 
-// get/set IO_RE2 aliases
+// get/set RE2 aliases
 #define IO_RE2_TRIS                 TRISEbits.TRISE2
 #define IO_RE2_LAT                  LATEbits.LATE2
 #define IO_RE2_PORT                 PORTEbits.RE2
@@ -161,28 +166,27 @@ void PIN_MANAGER_Initialize (void);
  */
 void PIN_MANAGER_IOC(void);
 
-
 /**
  * @Param
     none
  * @Returns
     none
  * @Description
-    Interrupt on Change Handler for the IOCCF2 pin functionality
+    Interrupt on Change Handler for the RC2 pin functionality
  * @Example
-    IOCCF2_ISR();
+    RC2_ISR();
  */
-void IOCCF2_ISR(void);
+void RC2_ISR(void);
 
 /**
   @Summary
-    Interrupt Handler Setter for IOCCF2 pin interrupt-on-change functionality
+    Interrupt Handler Setter for RC2 pin interrupt-on-change functionality
 
   @Description
-    Allows selecting an interrupt handler for IOCCF2 at application runtime
+    Allows selecting an interrupt handler for RC2 at application runtime
     
   @Preconditions
-    Pin Manager intializer called
+    Pins intializer called
 
   @Returns
     None.
@@ -192,21 +196,21 @@ void IOCCF2_ISR(void);
 
   @Example
     PIN_MANAGER_Initialize();
-    IOCCF2_SetInterruptHandler(MyInterruptHandler);
+    RC2_SetInterruptHandler(MyInterruptHandler);
 
 */
-void IOCCF2_SetInterruptHandler(void (* InterruptHandler)(void));
+void RC2_SetInterruptHandler(void (* InterruptHandler)(void));
 
 /**
   @Summary
-    Dynamic Interrupt Handler for IOCCF2 pin
+    Dynamic Interrupt Handler for RC2 pin
 
   @Description
-    This is a dynamic interrupt handler to be used together with the IOCCF2_SetInterruptHandler() method.
-    This handler is called every time the IOCCF2 ISR is executed and allows any function to be registered at runtime.
+    This is a dynamic interrupt handler to be used together with the RC2_SetInterruptHandler() method.
+    This handler is called every time the RC2 ISR is executed and allows any function to be registered at runtime.
     
   @Preconditions
-    Pin Manager intializer called
+    Pins intializer called
 
   @Returns
     None.
@@ -216,21 +220,21 @@ void IOCCF2_SetInterruptHandler(void (* InterruptHandler)(void));
 
   @Example
     PIN_MANAGER_Initialize();
-    IOCCF2_SetInterruptHandler(IOCCF2_InterruptHandler);
+    RC2_SetInterruptHandler(RC2_InterruptHandler);
 
 */
-extern void (*IOCCF2_InterruptHandler)(void);
+extern void (*RC2_InterruptHandler)(void);
 
 /**
   @Summary
-    Default Interrupt Handler for IOCCF2 pin
+    Default Interrupt Handler for RC2 pin
 
   @Description
-    This is a predefined interrupt handler to be used together with the IOCCF2_SetInterruptHandler() method.
-    This handler is called every time the IOCCF2 ISR is executed. 
+    This is a predefined interrupt handler to be used together with the RC2_SetInterruptHandler() method.
+    This handler is called every time the RC2 ISR is executed. 
     
   @Preconditions
-    Pin Manager intializer called
+    Pins intializer called
 
   @Returns
     None.
@@ -240,14 +244,15 @@ extern void (*IOCCF2_InterruptHandler)(void);
 
   @Example
     PIN_MANAGER_Initialize();
-    IOCCF2_SetInterruptHandler(IOCCF2_DefaultInterruptHandler);
+    RC2_SetInterruptHandler(RC2_DefaultInterruptHandler);
 
 */
-void IOCCF2_DefaultInterruptHandler(void);
+void RC2_DefaultInterruptHandler(void);
 
 
 
-#endif // PIN_MANAGER_H
+
+#endif // PINS_H
 /**
  End of File
 */

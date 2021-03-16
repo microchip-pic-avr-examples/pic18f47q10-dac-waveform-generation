@@ -13,29 +13,28 @@
   @Description
     This source file provides implementations for wave generation APIs.
     Generation Information :
-        Product Revision      :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.76
+        Product Revision      :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.7
         Device                :  PIC18F47Q10
-        Driver Version used   :  2.11
+
     The API's are tested against the following:
-        Compiler          :  XC8 2.00 or later
-        MPLAB             :  MPLAB X 5.20
+        Compiler          :  XC8 2.31 or later
+        MPLAB             :  MPLAB X 5.45
  */
 #include <pic18.h>
-#include "mcc_generated_files/pin_manager.h"
-#include "mcc_generated_files/device_config.h"
-#include "mcc_generated_files/dac1.h"
+#include "mcc_generated_files/system/system.h"
 #include "dac_application.h"
 
-#define XTAL_FREQ XTLA 1000000  
-#define POINTS 127                //Number of Inputs in array
-#define REFERENCE_VOL1 0x10        //Digital value for 3.14V/2
-#define REFERENCE_VOL2 0x1f       //Digital value for 3.14V
-#define FUNCTION_COUNT 5          //Number of functionality 3 signals + 2 reference voltage  
+ 
+#define POINTS (127)                //Number of Inputs in array
+#define REFERENCE_VOL1 (0x10)       //Digital value for 1.6V
+#define REFERENCE_VOL2 (0x1d)       //Digital value for 3V
+#define FUNCTION_COUNT (5)          //Number of functionality 3 signals + 2 reference voltage  
+#define UPDATE_DELAY (20)           // wait period in us for DAC register update
 
 volatile unsigned int swcnt; //variable to handle the interrupt counts for update the signal switch
 uint16_t *LUT_ptr; //Pointer to feed the input to DAC1
 
-// array to generate the sine wave signal 
+// array to generate the sine wave signal of 250 HZ, 3.3V peak to peak
 const uint16_t sineLUT[] = {
     0x10, 0x10, 0x11, 0x12, 0x13, 0x13, 0x14, 0x15,
     0x15, 0x16, 0x17, 0x17, 0x18, 0x19, 0x19, 0x1a,
@@ -55,7 +54,7 @@ const uint16_t sineLUT[] = {
     0xa, 0xa, 0xb, 0xc, 0xc, 0xd, 0xe, 0xf
 };
 
-// array to generate the square wave signal 
+// array to generate the square wave signal of 250 HZ, 3.3V peak to peak
 const uint16_t squareLUT[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -75,7 +74,7 @@ const uint16_t squareLUT[] = {
     0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f
 };
 
-//array to generate the triangle wave 
+//array to generate the triangle wave of 250 HZ, 3.3V peak to peak
 const uint16_t triangleLUT[] = {
     0x0, 0x1, 0x1, 0x2, 0x2, 0x3, 0x3, 0x4,
     0x4, 0x5, 0x5, 0x6, 0x6, 0x7, 0x7, 0x8,
@@ -95,7 +94,7 @@ const uint16_t triangleLUT[] = {
     0x3, 0x3, 0x2, 0x2, 0x1, 0x1, 0x0, 0x0
 };
 
-//array to generate the sawtooth wave 
+//array to generate the sawtooth wave of 250 HZ, 3.3V peak to peak
 const uint16_t sawtoothLUT[] = {
     0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x01,
     0x02, 0x02, 0x02, 0x02, 0x03, 0x03, 0x03, 0x03,
@@ -134,23 +133,26 @@ void WaveGenerator(void)
 {
     uint16_t i = 0;
     WaveSwitch(swcnt);
+    
     if (swcnt >= (FUNCTION_COUNT - 3))
     {
         for (i = 0; i <= POINTS; i++)
         {
+            //change the DAC out periodically for number of points to generate different waveforms
+            //sine, triangular, sawtooth etc. according to the lookup table
             DAC1_SetOutput(*LUT_ptr++);
         }
     } 
     else 
     {
-        DAC1_SetOutput(*LUT_ptr);
+        DAC1_SetOutput(*LUT_ptr);// set constant output for first two functions
     }
 }
 
 void WaveSwitch(uint16_t sw) 
 {
     LUT_ptr = (uint16_t*) signals[sw];
-    __delay_us(20);
+    __delay_us(UPDATE_DELAY);
 }
 
 void UserInterruptHandler(void) 
@@ -160,7 +162,8 @@ void UserInterruptHandler(void)
     {
         swcnt++; //Updating the switch pointer 
     }
-    else {
+    else 
+    {
         swcnt = 0;
     }
 }

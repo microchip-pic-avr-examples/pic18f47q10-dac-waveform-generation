@@ -1,3 +1,23 @@
+/**
+  DAC1 Generated Driver File
+
+  @Company
+    Microchip Technology Inc.
+
+  @File Name
+   dac1.c
+
+  @Summary
+    This is the generated driver implementation file for the DAC1 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+
+  @Description
+    This Source file provides implementations of the APIs.
+    Generation Information :
+        Driver Version    :   2.1.0
+    The generated drivers are tested against the following:
+        Compiler          :   XC8 v2.20
+        MPLAB             :   MPLABX v5.40
+*/
 /*
 Copyright (c) [2012-2020] Microchip Technology Inc.  
 
@@ -31,38 +51,37 @@ Copyright (c) [2012-2020] Microchip Technology Inc.
     third party licenses prohibit any of the restrictions described here, 
     such restrictions will not apply to such third party software.
 */
-#include "mcc_generated_files/system/system.h"
-#include "dac_application.h"
-/*
-    Main application
+
+/**
+  Section: Included Files
 */
 
-int main(void)
-{
-    SYSTEM_Initialize();
+#include <xc.h>
+#include "../dac1.h"
+
+/**
+  Section: DAC1 APIs
+*/
+
+void DAC1_Initialize(void) {
+ 
+    //DACNSS VSS; DACPSS VDD; DACOE2 disabled; DACOE1 enabled; DACEN enabled; 
+    DAC1CON0 =  0xA0;
     
-    // If using interrupts in PIC18 High/Low Priority Mode you need to enable the Global High and Low Interrupts
-    // If using interrupts in PIC Mid-Range Compatibility Mode you need to enable the Global and Peripheral Interrupts
-    // Use the following macros to:
 
-    // Enable the Global Interrupts
-    INTERRUPT_GlobalInterruptEnable();
-
-    // Disable the Global Interrupts
-    //INTERRUPT_GlobalInterruptDisable();
-
-    // Enable the Peripheral Interrupts
-    INTERRUPT_PeripheralInterruptEnable();
-
-    // Disable the Peripheral Interrupts
-    //INTERRUPT_PeripheralInterruptDisable();
-    
-    // Setting default interrupt as custom interrupt handler 
-    RC2_SetInterruptHandler(UserInterruptHandler);
-    
-    while (1)
-    {
-      WaveGenerator();   //Main function to generate waves 
-      
-    }
+    //DACR 29; 
+    DAC1CON1 =  0x1D;
 }
+
+void DAC1_SetOutput (uint8_t inputData){
+ 
+    DAC1CON1 =  inputData;
+}
+
+uint8_t DAC1_GetOutput(void) {
+ 
+    return DAC1CON1;
+}
+/**
+ End of File
+*/
