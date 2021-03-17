@@ -114,7 +114,6 @@ Add DAC peripherals to the project from Device Resources → Drivers.
 The Digital to Analog Convertor module is used to convert digital Look Up Table into analog signal. DAC is configured as follows.  
 * Set "VDD" as "3.3"
 * Set "Required ref" as "1.6"
-* Set "Clock Divider" as "1"
 * Set "DAC Positive Reference" as "VDD"
 * Set "DAC Negative Reference" as "VSS"
 * Enable output on DACOUT1 i.e. DAC Output is connected to DAC1OUT1 pin of Microcontroller (RA2).
