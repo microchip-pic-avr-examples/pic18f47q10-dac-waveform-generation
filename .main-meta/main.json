@@ -4,7 +4,7 @@
     "content": {
         "metaDataVersion": "1.1.0",
         "name": "com.microchip.mcu8.mplabx.project.pic18f47q10-dac-waveform-generation",
-        "version": "1.0.1",
+        "version": "2.0.0",
         "displayName": "Waveform generation using DAC",
         "projectName": "pic18f47q10-dac-waveform-generation",
         "shortDescription": "This example demonstrates how DAC peripherals from PICQ10, can be used to generate reference voltage and different signals",
@@ -48,7 +48,7 @@
         ],
         "keywords": [
             "Waveform generation",
-		"Reference Voltage"
+		"Reference Voltage",
 		"Melody"			
         ],
 		"additionalData": {
