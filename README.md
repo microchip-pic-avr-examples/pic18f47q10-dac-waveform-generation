@@ -53,8 +53,8 @@ This example generates the reference voltage at power up, and the signal output 
 - Timer 2 interrupt is used for updating the DAC register. 
 - Frequency of the generated signal = 1/ (total number of points in one cycle * Timer 2 period) = 1/(128 * 78.13 us) = 100 Hz.
 - For changing the frequency of the generated signal timer 2 period can be changed. 
-- 
-- **Note that the system clock frequency also has impact on the maximum frequency that can be generated using this method. For generating higher frequecy signal the higher system clock frequency should be used. With 64 MHz of system clock frequency the maximum frequency generated is 1.1 KHz.
+
+**Note that the system clock frequency also has impact on the maximum frequency that can be generated using this method. For generating higher frequecy signal the higher system clock frequency should be used. With 64 MHz of system clock frequency the maximum frequency generated is 1.1 KHz.
 
 Operation of this example is discussed in following section.
 
@@ -180,7 +180,8 @@ The I/O pin mapping of the PIC18F47Q10 MCU for DAC interface and Curiosity Nano 
 **Figure 10: Pin Manager**
 
 
-The on-board switch SW0 on the Curiosity Nano board is connected to RE2.  As external interrupt configuration is not possible on pin RE2, pin RC2 is configured as timer 4 input pin for implementing switch debounce and generating an interrupt on switch press and release event. Pin RC2 is shorted to RE2 using external jumper for detecting button press and release event.
+The on-board switch SW0 on the Curiosity Nano board is connected to RE2.  
+As pin RE2 cannot be used as input pin for timer 4, pin RC2 is configured as timer 4 input pin for implementing switch debounce and generating an interrupt on switch press and release event. Pin RC2 is shorted to RE2 using external jumper for detecting button press and release event.
 
 # Demo Operation
 
