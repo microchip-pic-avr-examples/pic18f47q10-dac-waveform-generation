@@ -43,15 +43,18 @@ This example generates the reference voltage at power up, and the signal output 
 1.	Reference voltage 1.6V (on Power up)
 2.	Reference voltage 3V
 3.	Sine Wave
-4.	Triangle Wave
+4.	Triangular Wave
 5.	Square Wave
 6.	Sawtooth Wave
 
-**Frequency calculation for the generated signal******
-When the signal to be generated is Sine wave, Triangular wave, Square wave or Saw-Tooth wave, frequency of the generated signal is decided by the DAC register update frequency and total number of points in one cycle of the signal.
-Timer 2 interrupt is used for updating the DAC register. 
-Frequency of the generated signal = 1/ (total number of points in one cycle * Timer 2 period) = 1/(128 * 78.13 us) = 100 Hz.
-For changing the frequency of the generated signal timer 2 period can be changed. Note that the system clock frequency also has impact on the maximum frequency that can be generated using this method. For generating higher frequecy signal the higher system clock frequency should be used. With 64 MHz of system clock frequency the maximum frequency generated is 1.1 KHz.
+**Frequency calculation for the generated signal**
+
+- When the signal to be generated is Sine wave, Triangular wave, Square wave or Sawtooth wave, frequency of the generated signal is decided by the DAC register update frequency and total number of points in one cycle of the signal.
+- Timer 2 interrupt is used for updating the DAC register. 
+- Frequency of the generated signal = 1/ (total number of points in one cycle * Timer 2 period) = 1/(128 * 78.13 us) = 100 Hz.
+- For changing the frequency of the generated signal timer 2 period can be changed. 
+- 
+- **Note that the system clock frequency also has impact on the maximum frequency that can be generated using this method. For generating higher frequecy signal the higher system clock frequency should be used. With 64 MHz of system clock frequency the maximum frequency generated is 1.1 KHz.
 
 Operation of this example is discussed in following section.
 
@@ -74,7 +77,6 @@ Following Microchip’s free IDE, compiler and graphical code generators are use
 * [MCC Device Libraries PIC10 / PIC12 / PIC16 / PIC18  MCUs v1.81.7 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
 * [Microchip PIC18F-Q Series Device Support 1.9.175 or newer](https://packs.download.microchip.com/)
 
-*
 # Hardware Setup
 The following figures (Figure 3.1 and Figure 3.2) show the hardware connection details.
 
@@ -121,7 +123,7 @@ Figure 6 shows the DAC configuration using MCC.
 **Figure 6: DAC Configuration**
 
 ## -> Timer 2 configuration
-Timer 2 overflow interrupt is used to update DAC register when the signal to be generated is Sine wave, Triangular wave, Square wave or Saw-Tooth wave. Period of the timer 2 along with total number of points in one cycle of the signal, decides frequency of the generated signal.
+Timer 2 overflow interrupt is used to update DAC register when the signal to be generated is Sine wave, Triangular wave, Square wave or Sawtooth wave. Period of the timer 2 along with total number of points in one cycle of the signal, decides frequency of the generated signal.
 Timer 2 is configured as follows.  
 * Set "Control mode" as "Roll over pulse"
 * Set "Clock Source" as "FOSC/4"
@@ -154,7 +156,7 @@ Figure 8 shows the Timer 4 configuration using MCC.
 **Figure 8: Timer 4 Configuration**
 
 ## ->  Pin Configuration
-The I/O pin mapping of the PIC18F47Q10 MCU for the DAC, switch and on-board LED is shown in the Figure 8.
+The I/O pin mapping of the PIC18F47Q10 MCU for the DAC, switch and on-board LED is shown in the Figure 9.
 
 Configurations to be done in the Pin Manager grid view window:
 * Pin RA2 will be selected as DAC1OUT1 output pin.
@@ -178,7 +180,7 @@ The I/O pin mapping of the PIC18F47Q10 MCU for DAC interface and Curiosity Nano 
 **Figure 10: Pin Manager**
 
 
-The on-board switch SW0 on the Curiosity Nano board is connected to RE2.  As external interrupt configuration is not possible on pin RE2, pin RC2 is configured to generate an Interrupt on Change (IOC) on positive edge. Pin RC2 is shorted to RE2 using external jumper for detecting button press event using IOC feature.
+The on-board switch SW0 on the Curiosity Nano board is connected to RE2.  As external interrupt configuration is not possible on pin RE2, pin RC2 is configured as timer 4 input pin for implementing switch debounce and generating an interrupt on switch press and release event. Pin RC2 is shorted to RE2 using external jumper for detecting button press and release event.
 
 # Demo Operation
 
@@ -216,7 +218,7 @@ The on-board switch SW0 on the Curiosity Nano board is connected to RE2.  As ext
 
 ![Generated_triangle_wave_on_oscilloscope](images/Generated_triangular_wave_on_oscilloscope.png)
 
-**Figure 15: Generated Triangle Wave on Oscilloscope screen**
+**Figure 15: Generated Triangular Wave on Oscilloscope screen**
 
 * 	Press on board button (SW0) to change the generated signal and observe the Square wave on the Oscilloscope screen.
 
@@ -224,7 +226,7 @@ The on-board switch SW0 on the Curiosity Nano board is connected to RE2.  As ext
 
 **Figure 16: Generated Square Wave on Oscilloscope screen**
 
-* 	Press on board button (SW0) to change the generated signal and observe the Saw tooth wave on the Oscilloscope screen. 						
+* 	Press on board button (SW0) to change the generated signal and observe the Sawtooth wave on the Oscilloscope screen. 						
 
 ![Generated_sawtooth_wave_on_oscilloscope](images/Generated_sawtooth_wave_on_oscilloscope.png)
 
