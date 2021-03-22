@@ -98,9 +98,13 @@ void __interrupt() INTERRUPT_InterruptManager (void)
     // interrupt handler
     if(INTCONbits.PEIE == 1)
     {
-        if(PIE0bits.IOCIE == 1 && PIR0bits.IOCIF == 1)
+        if(PIE4bits.TMR2IE == 1 && PIR4bits.TMR2IF == 1)
         {
-            PIN_MANAGER_IOC();
+            Timer2_ISR();
+        } 
+        else if(PIE4bits.TMR4IE == 1 && PIR4bits.TMR4IF == 1)
+        {
+            Timer4_ISR();
         } 
         else
         {

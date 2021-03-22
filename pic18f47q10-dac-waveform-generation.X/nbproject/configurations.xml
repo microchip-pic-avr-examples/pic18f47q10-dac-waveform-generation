@@ -17,6 +17,11 @@
           <itemPath>mcc_generated_files/system/interrupt.h</itemPath>
           <itemPath>mcc_generated_files/system/config_bits.h</itemPath>
         </logicalFolder>
+        <logicalFolder name="timer" displayName="timer" projectFiles="true">
+          <itemPath>mcc_generated_files/timer/timer_interface.h</itemPath>
+          <itemPath>mcc_generated_files/timer/tmr2.h</itemPath>
+          <itemPath>mcc_generated_files/timer/tmr4.h</itemPath>
+        </logicalFolder>
       </logicalFolder>
       <itemPath>dac_application.h</itemPath>
     </logicalFolder>
@@ -44,6 +49,12 @@
             <itemPath>mcc_generated_files/system/src/clock.c</itemPath>
           </logicalFolder>
         </logicalFolder>
+        <logicalFolder name="timer" displayName="timer" projectFiles="true">
+          <logicalFolder name="src" displayName="src" projectFiles="true">
+            <itemPath>mcc_generated_files/timer/src/tmr2.c</itemPath>
+            <itemPath>mcc_generated_files/timer/src/tmr4.c</itemPath>
+          </logicalFolder>
+        </logicalFolder>
       </logicalFolder>
       <itemPath>main.c</itemPath>
       <itemPath>dac_application.c</itemPath>
@@ -53,6 +64,7 @@
                    projectFiles="false">
       <itemPath>Makefile</itemPath>
       <itemPath>pic18f47q10-dac-waveform-generation-ccl-9.mc3</itemPath>
+      <itemPath>pic18f47q10-dac-waveform-generation.mc3</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -228,8 +240,6 @@
         <property key="memories.programmemory.ranges" value="0-1ffff"/>
         <property key="memories.rww" value="true"/>
         <property key="poweroptions.powerenable" value="false"/>
-        <property key="programmerToGoFilePath"
-                  value="D:/AVR_Apps/metadata/CCL/Q10/dac/pic18f47q10-dac-waveform-generation.X/debug/free/pic18f47q10-dac-waveform-generation_ptg"/>
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.preservedataflash" value="false"/>
         <property key="programoptions.preservedataflash.ranges"
@@ -415,8 +425,6 @@
         <property key="memories.programmemory.ranges" value="0-1ffff"/>
         <property key="memories.rww" value="true"/>
         <property key="poweroptions.powerenable" value="false"/>
-        <property key="programmerToGoFilePath"
-                  value="D:/AVR_Apps/metadata/CCL/Q10/dac/pic18f47q10-dac-waveform-generation.X/debug/pro/pic18f47q10-dac-waveform-generation_ptg"/>
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.preservedataflash" value="false"/>
         <property key="programoptions.preservedataflash.ranges"

@@ -26,7 +26,7 @@ The signals generated in this example are “Sine wave, Triangular wave, Square 
 
 2.  Waveforms:
 * 	Amplitude of the signal – 3.3V
-* 	Frequency of the signal – 250Hz (The Example demonstrates signal frequency as constant parameter.  Firmware source code can be modified to change the frequency of signal.)
+* 	Frequency of the signal – 100Hz (DAC register update frequency can be modified by changing timer period to change the frequency of the generated signal.)
 
 Figure 1 shows an overview of the Signal Generator Example.
 
@@ -47,6 +47,12 @@ This example generates the reference voltage at power up, and the signal output 
 5.	Square Wave
 6.	Sawtooth Wave
 
+**Frequency calculation for the generated signal******
+When the signal to be generated is Sine wave, Triangular wave, Square wave or Saw-Tooth wave, frequency of the generated signal is decided by the DAC register update frequency and total number of points in one cycle of the signal.
+Timer 2 interrupt is used for updating the DAC register. 
+Frequency of the generated signal = 1/ (total number of points in one cycle * Timer 2 period) = 1/(128 * 78.13 us) = 100 Hz.
+For changing the frequency of the generated signal timer 2 period can be changed. Note that the system clock frequency also has impact on the maximum frequency that can be generated using this method. For generating higher frequecy signal the higher system clock frequency should be used. With 64 MHz of system clock frequency the maximum frequency generated is 1.1 KHz.
+
 Operation of this example is discussed in following section.
 
 # Hardware used
@@ -61,15 +67,14 @@ With full program and debug capabilities, the PIC18F47Q10 Curiosity Nano evaluat
 # Software Tools
 Following Microchip’s free IDE, compiler and graphical code generators are used for the application firmware development.
 
-* [MPLAB® X IDE v5.45](http://www.microchip.com/mplab/mplab-x-ide)
-* [XC8 Compiler v2.31](http://www.microchip.com/mplab/compilers)
-* [MPLAB® Code Configurator (MCC) v4.1.0](https://www.microchip.com/mplab/mplab-code-configurator)
-* [MPLAB® Code Configurator Library (CCL) v1.37.14](https://www.microchip.com/mplab/mplab-code-configurator)
-* [MCC Device Libraries PIC10 / PIC12 / PIC16 / PIC18  MCUs v1.81.7](https://www.microchip.com/mplab/mplab-code-configurator)
-* [Microchip PIC18F-Q Series Device Support 1.9.175](https://packs.download.microchip.com/)
+* [MPLAB® X IDE v5.45 or newer](http://www.microchip.com/mplab/mplab-x-ide)
+* [XC8 Compiler v2.31 or newer](http://www.microchip.com/mplab/compilers)
+* [MPLAB® Code Configurator (MCC) v4.1.0 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
+* [MPLAB® Code Configurator Library (CCL) v1.37.14 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
+* [MCC Device Libraries PIC10 / PIC12 / PIC16 / PIC18  MCUs v1.81.7 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
+* [Microchip PIC18F-Q Series Device Support 1.9.175 or newer](https://packs.download.microchip.com/)
 
-***Note: For running the demo, the installed tool versions should be the same or later. This example is not tested with previous versions.***
-
+*
 # Hardware Setup
 The following figures (Figure 3.1 and Figure 3.2) show the hardware connection details.
 
@@ -86,29 +91,20 @@ The following figures (Figure 3.1 and Figure 3.2) show the hardware connection d
 Open "Clock Control" setup present under "System" dropdown menu in "Project Resources" tab.
 
 * Set "Clock Source" as "HFINTOSC"
-* Set "HF Internal Clock" as "4_MHz"
+* Set "HF Internal Clock" as "16_MHz"
 * Set "Clock Divider" as "1"
 
 ![Clock Control](images/clock_control.png)
 
  **Figure 4: Clock Control**
 
-Click on the Configuration Bits tab under Project Resources → System tab for changing the default configuration bit settings.
-
-Select "WDT Operating Mode" from CONFIG3L register as "WDT Disabled" to disable the watchdog timer.
-
-## ->  Configure Configuration Bits
-![configuration_bits](images/configuration_bits_wdt.png)
-
- **Figure 5: Configuration Bits**
-
 *  **Add peripherals to the project**
 
-Add DAC peripherals to the project from Device Resources → Drivers.
+Add DAC, Timer 2 and Timer 4 peripherals to the project from Device Resources → Drivers.
 
 ![peripherals](images/Peripherals.png)
 
- **Figure 6: Peripherals**
+ **Figure 5: Peripherals**
 
 ## -> DAC configuration
 The Digital to Analog Convertor module is used to convert digital Look Up Table into analog signal. DAC is configured as follows.  
@@ -118,35 +114,68 @@ The Digital to Analog Convertor module is used to convert digital Look Up Table 
 * Set "DAC Negative Reference" as "VSS"
 * Enable output on DACOUT1 i.e. DAC Output is connected to DAC1OUT1 pin of Microcontroller (RA2).
 
-Figure 7 shows the DAC configuration using MCC.
+Figure 6 shows the DAC configuration using MCC.
 
 ![DAC_configuration_using_MCC](images/DAC_configuration.png)
 
-**Figure 7: DAC Configuration**
+**Figure 6: DAC Configuration**
+
+## -> Timer 2 configuration
+Timer 2 overflow interrupt is used to update DAC register when the signal to be generated is Sine wave, Triangular wave, Square wave or Saw-Tooth wave. Period of the timer 2 along with total number of points in one cycle of the signal, decides frequency of the generated signal.
+Timer 2 is configured as follows.  
+* Set "Control mode" as "Roll over pulse"
+* Set "Clock Source" as "FOSC/4"
+* Set "Prescaler" as "1:8"
+* Set "Timer period" as "78 us"
+* Enable Timer interrupt.
+
+Figure 7 shows the Timer 2 configuration using MCC.
+
+![Timer2_configuration_using_MCC](images/timer2.png)
+
+**Figure 7: Timer 2 Configuration**
+
+## -> Timer 4 configuration
+Timer 4 is used to implement the switch debounce for switch press and release event. 
+Timer 4 is configured as follows.  
+* Set "Control mode" as "Monostable"
+* Set "External Reset Source" as "T4INPPS pin"
+* Set "Start/Reset Option" as "Starts on rising/falling edge on TMR4_ers"
+* Set "Clock Source" as "LFINTOSC"
+* Set "Prescaler" as "1:128"
+* Set "Postscaler" as "1:2"
+* Set "Timer period" as "50 ms"
+* Enable Timer interrupt.
+
+Figure 8 shows the Timer 4 configuration using MCC.
+
+![Timer4_configuration_using_MCC](images/timer4.png)
+
+**Figure 8: Timer 4 Configuration**
 
 ## ->  Pin Configuration
-The I/O pin mapping of the PIC18F47Q10 MCU for the DAC and on-board LED is shown in the Figure 8.
+The I/O pin mapping of the PIC18F47Q10 MCU for the DAC, switch and on-board LED is shown in the Figure 8.
 
 Configurations to be done in the Pin Manager grid view window:
 * Pin RA2 will be selected as DAC1OUT1 output pin.
-* Select pins RE2 and RC2 as input pins. On-board switch SW0 is connected to pin RE2.
+* Select pin RC2 as TMR4 T4IN input pin.
+* Select pins RE2 and RC2 as input pins. On-board switch SW0 is connected to pin RE2. Pins RE2 and RC2 are connected using jumper to use RC2 as T4IN pin.
 * Configure Pin RE0 as output for connecting to LED.
 
 ![Pin Manager grid view](images/pin_manager_grid_view.png)
 
-**Figure 8: Pin Manager grid view**
+**Figure 9: Pin Manager grid view**
 
 Configurations to be done in the Pin Manager window:
 * Check the analog checkbox for RA2.
 * Enable weak pull-up for RC2 and RE2 pins.
-* Set Interrupt on change for RC2 to positive.
 * Add custom name to the RE0 output pin as LED.
 
-The I/O pin mapping of the PIC18F47Q10 MCU for DAC interface and Curiosity Nano on board LED is shown in Figure 9.
+The I/O pin mapping of the PIC18F47Q10 MCU for DAC interface and Curiosity Nano on board LED is shown in Figure 10.
 
 ![Pin Manager](images/pin_manager.png)
 
-**Figure 9: Pin Manager**
+**Figure 10: Pin Manager**
 
 
 The on-board switch SW0 on the Curiosity Nano board is connected to RE2.  As external interrupt configuration is not possible on pin RE2, pin RC2 is configured to generate an Interrupt on Change (IOC) on positive edge. Pin RC2 is shorted to RE2 using external jumper for detecting button press event using IOC feature.
@@ -162,44 +191,44 @@ The on-board switch SW0 on the Curiosity Nano board is connected to RE2.  As ext
 
 ![Programming_the_device](images/Programming_the_device.png)
 
-**Figure 10: Programing the device**
+**Figure 11: Programing the device**
 
 * 	Turn on the Oscilloscope.
 * 	Observe the default Constant signal (Reference Voltage 1.6V) on the Oscilloscope screen.
 
 ![Generated_reference_voltage_signal_on_oscilloscope_screen](images/Generated_reference_voltage_signal_on_oscilloscope_screen_1.png)
 
-**Figure 11: Generated Reference voltage (1.6V) Signal on Oscilloscope screen**
+**Figure 12: Generated Reference voltage (1.6V) Signal on Oscilloscope screen**
 
 * 	Press on board button (SW0) to change the generated signal and observe the constant 3.0 volts signal on the Oscilloscope screen.
 
 ![Generated_constant_voltage_signal_on_oscilloscope_screen](images/Generated_reference_voltage_signal_on_oscilloscope_screen_2.png)
 
- **Figure 12: Generated Constant voltage (3.0V) Signal on Oscilloscope screen**
+ **Figure 13: Generated Constant voltage (3.0V) Signal on Oscilloscope screen**
 
 * 	Press on board button (SW0) to change the generated signal and observe the Sine wave on the Oscilloscope screen. 	
 
 ![Generated_sine_wave_on_oscillosocope](images/Generated_sine_wave_on_oscillosocope.png)
 
-**Figure 13: Generated Sine Wave on Oscilloscope screen**
+**Figure 14: Generated Sine Wave on Oscilloscope screen**
 
 * 	Press on board button (SW0) to change the generated signal and observe the Triangular wave on the Oscilloscope screen. 								
 
 ![Generated_triangle_wave_on_oscilloscope](images/Generated_triangular_wave_on_oscilloscope.png)
 
-**Figure 14: Generated Triangle Wave on Oscilloscope screen**
+**Figure 15: Generated Triangle Wave on Oscilloscope screen**
 
 * 	Press on board button (SW0) to change the generated signal and observe the Square wave on the Oscilloscope screen.
 
 ![Generated_square_wave_on_oscilloscope](images/Generated_square_wave_on_oscilloscope.png)
 
-**Figure 15: Generated Square Wave on Oscilloscope screen**
+**Figure 16: Generated Square Wave on Oscilloscope screen**
 
 * 	Press on board button (SW0) to change the generated signal and observe the Saw tooth wave on the Oscilloscope screen. 						
 
 ![Generated_sawtooth_wave_on_oscilloscope](images/Generated_sawtooth_wave_on_oscilloscope.png)
 
-**Figure 16: Generated Sawtooth Wave on Oscilloscope screen**
+**Figure 17: Generated Sawtooth Wave on Oscilloscope screen**
 
 * 	Press on board button (SW0) to change the generated signal and observe the default Constant signal on the Oscilloscope screen.
 * 	Cycle is repeated, once six signals are generated and displayed.

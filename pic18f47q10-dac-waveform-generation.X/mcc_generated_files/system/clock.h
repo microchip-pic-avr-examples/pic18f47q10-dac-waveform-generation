@@ -57,7 +57,7 @@ Copyright (c) [2012-2020] Microchip Technology Inc.
 #define	CLOCK_H
 
 #ifndef _XTAL_FREQ
-#define _XTAL_FREQ 4000000
+#define _XTAL_FREQ 16000000
 #endif
 
 void CLOCK_Initialize(void);

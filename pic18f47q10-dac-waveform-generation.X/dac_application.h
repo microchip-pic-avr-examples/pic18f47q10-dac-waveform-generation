@@ -40,42 +40,50 @@ extern "C" {
         }
         </code>
      */
-
     void WaveGenerator(void);
-    /**
-      @Summary
-      switch the signals from one signal to another (change the input array) 
+    
 
-      @Description
-        This routine update the corresponding array to the pointer for change the generation of signal 
-     using DAC1. (the change over variable get update when external interrupt occurs) 
-      @Preconditions
-        The WaveSwitch() routine should be called
-        prior to use this routine.
-
-      @Param
-        inputData - switching status.
-
-      @Returns
-        None
-
-      @Example
-        <code>
-       void WaveGenerator(void)
-     {
-       WaveSwitch();
-  
-      }
- 
-        </code>
-     */
-    void WaveSwitch(uint16_t sw);
 
     /*
-     Custom user interrupt handler routine
-     */
+      @Description
+        Custom user interrupt handler routine for IOC on switch press
+      @Preconditions
+         None
+      @Param
+        None
+      @Returns
+        None      
+    */
     void UserInterruptHandler(void);
     
+    /*
+      @Description
+        interrupt handler routine for timer overflow
+      @Preconditions
+         None
+      @Param
+        None
+      @Returns
+        None      
+    */ 
+    void TmrUserInterruptHandler(void);
+
+    /*
+      @Description
+     initialize LUT pointer for generating first waveform at power up
+      @Preconditions
+         None
+      @Param
+        None
+      @Returns
+        None      
+    */    
+    void InitWaveform(void);
+    
+
+    
+
+
 #ifdef	__cplusplus
 }
 #endif

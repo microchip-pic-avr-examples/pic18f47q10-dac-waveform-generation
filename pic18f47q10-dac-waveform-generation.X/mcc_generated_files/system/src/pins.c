@@ -43,7 +43,6 @@
 
 #include "../pins.h"
 
-void (*RC2_InterruptHandler)(void);
 
 void PIN_MANAGER_Initialize(void)
 {
@@ -112,6 +111,7 @@ void PIN_MANAGER_Initialize(void)
     /**
     PPS registers
     */
+    T4INPPS = 0x12; //RC2->TMR4:T4IN;
 
    /**
     IOCx registers 
@@ -122,57 +122,20 @@ void PIN_MANAGER_Initialize(void)
     IOCBP = 0x0;
     IOCBN = 0x0;
     IOCBF = 0x0;
-    IOCCP = 0x4;
+    IOCCP = 0x0;
     IOCCN = 0x0;
     IOCCF = 0x0;
     IOCEP = 0x0;
     IOCEN = 0x0;
     IOCEF = 0x0;
 
-    RC2_SetInterruptHandler(RC2_DefaultInterruptHandler);
 
-    // Enable PIE0bits.IOCIE interrupt 
-    PIE0bits.IOCIE = 1; 
 }
   
 void PIN_MANAGER_IOC(void)
 {
-    // interrupt on change for pin RC2
-    if(IOCCFbits.IOCCF2 == 1)
-    {
-        RC2_ISR();  
-    }
 }
 
-/**
-   RC2 Interrupt Service Routine
-*/
-void RC2_ISR(void) {
-
-    // Add custom RC2 code
-
-    // Call the interrupt handler for the callback registered at runtime
-    if(RC2_InterruptHandler)
-    {
-        RC2_InterruptHandler();
-    }
-    IOCCFbits.IOCCF2 = 0;
-}
-
-/**
-  Allows selecting an interrupt handler for RC2 at application runtime
-*/
-void RC2_SetInterruptHandler(void (* InterruptHandler)(void)){
-    RC2_InterruptHandler = InterruptHandler;
-}
-
-/**
-  Default interrupt handler for RC2
-*/
-void RC2_DefaultInterruptHandler(void){
-    // add your RC2 interrupt custom code
-    // or set custom function using RC2_SetInterruptHandler()
-}
 /**
  End of File
 */

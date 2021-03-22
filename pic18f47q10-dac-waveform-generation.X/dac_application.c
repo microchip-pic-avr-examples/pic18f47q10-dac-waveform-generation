@@ -24,13 +24,17 @@
 #include "mcc_generated_files/system/system.h"
 #include "dac_application.h"
 
- 
-#define POINTS (127)                //Number of Inputs in array
+#define SET (1)
+#define CLEAR (0)
+#define POINTS (128)                //Number of Inputs in array
 #define REFERENCE_VOL1 (0x10)       //Digital value for 1.6V
 #define REFERENCE_VOL2 (0x1d)       //Digital value for 3V
-#define FUNCTION_COUNT (5)          //Number of functionality 3 signals + 2 reference voltage  
-#define UPDATE_DELAY (20)           // wait period in us for DAC register update
+#define MAX_WAVE_COUNT (5)          //Number of functionality 3 signals + 2 reference voltage  
 
+
+uint8_t dacUpdateFlag = CLEAR;
+uint8_t changeWaveformFlag = CLEAR;
+uint8_t index = POINTS;
 volatile unsigned int swcnt; //variable to handle the interrupt counts for update the signal switch
 uint16_t *LUT_ptr; //Pointer to feed the input to DAC1
 
@@ -129,41 +133,120 @@ const uint16_t *signals[] = {
     defaultLUT
 };
 
+//enum for waveform format
+typedef enum  {
+    REF_VOLTAGE_1,
+    REF_VOLTAGE_2,
+    SINE_WAVE,
+    TRIANGULAR_WAVE,
+    SQUARE_WAVE,
+    SAWTOOTH_WAVE 
+}e_signal;
+
+
+void ChangeWave(void);    
+void UpdateDac(void);
+
 void WaveGenerator(void)
 {
-    uint16_t i = 0;
-    WaveSwitch(swcnt);
+    if (changeWaveformFlag == SET)
+    {
+        ChangeWave();
+        changeWaveformFlag = CLEAR;
+    }
     
-    if (swcnt >= (FUNCTION_COUNT - 3))
+    switch (swcnt)
     {
-        for (i = 0; i <= POINTS; i++)
-        {
-            //change the DAC out periodically for number of points to generate different waveforms
-            //sine, triangular, sawtooth etc. according to the lookup table
-            DAC1_SetOutput(*LUT_ptr++);
-        }
-    } 
-    else 
-    {
-        DAC1_SetOutput(*LUT_ptr);// set constant output for first two functions
+        case REF_VOLTAGE_1:
+            DAC1_SetOutput(*LUT_ptr);// set constant output
+            break;
+        case REF_VOLTAGE_2:
+            DAC1_SetOutput(*LUT_ptr);// set constant output
+            break;
+        case SINE_WAVE:
+            UpdateDac();
+            break;
+        case TRIANGULAR_WAVE:
+            UpdateDac();
+            break;
+        case SQUARE_WAVE:
+            UpdateDac();
+            break;
+        case SAWTOOTH_WAVE:
+            UpdateDac();
+            break;
+        default:
+            DAC1_SetOutput(REFERENCE_VOL1);// set constant output
+            break;                    
     }
 }
 
-void WaveSwitch(uint16_t sw) 
+/*
+  @Description
+ Check if its time to change the DAC output for number of points to generate different waveforms and increment the LUT pointer
+  @Preconditions
+     None
+  @Param
+    None
+  @Returns
+    None      
+*/
+void UpdateDac(void)
 {
-    LUT_ptr = (uint16_t*) signals[sw];
-    __delay_us(UPDATE_DELAY);
+    //change the DAC out periodically for number of points to generate different waveforms
+    //sine, triangular, sawtooth etc. according to the lookup table
+    // the period of the timer and number of points in the waveform will determine the frequency of the generated waveform
+    if (dacUpdateFlag == SET)
+    {        
+        DAC1_SetOutput(*LUT_ptr++);
+        index --;
+        if (index <= 0  )
+        {
+            index = POINTS;
+            LUT_ptr = (uint16_t*) signals[swcnt];
+        }
+        dacUpdateFlag = CLEAR;
+    }
+} 
+
+/**
+   @Description
+  switch the signals from one signal to another after switch press event 
+  @Preconditions
+    The changeWaveformFlag should be set prior to use this routine.
+  @Param
+    None
+  @Returns
+    None
+ */
+void ChangeWave(void) 
+{
+    LED_Toggle();
+    if (swcnt < MAX_WAVE_COUNT) 
+    {
+        swcnt++; //Updating the switch count for changing to next waveform         
+    }
+    else 
+    {
+        swcnt = 0;// point to the first waveform to be generated   
+    }
+    LUT_ptr = (uint16_t*) signals[swcnt]; // LUT pointer = first point in the LUT of corresponding signal
+    index = POINTS; // initialize to number of points in the waveform
+}
+
+void InitWaveform(void) 
+{
+    LUT_ptr = (uint16_t*) signals[0];    
 }
 
 void UserInterruptHandler(void) 
 {
-    LED_Toggle();
-    if (swcnt < FUNCTION_COUNT) 
-    {
-        swcnt++; //Updating the switch pointer 
-    }
-    else 
-    {
-        swcnt = 0;
-    }
+    changeWaveformFlag = SET;   
 }
+
+void TmrUserInterruptHandler(void) 
+{
+    //the period of the timer and number of points in the waveform will determine the frequency of the generated waveform
+    dacUpdateFlag = SET;
+}
+
