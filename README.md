@@ -183,7 +183,7 @@ The I/O pin mapping of the PIC18F47Q10 MCU for DAC interface and Curiosity Nano 
 
 
 The on-board switch SW0 on the Curiosity Nano board is connected to RE2.  
-As pin RE2 cannot be used as input pin for timer 4, pin RC2 is configured as timer 4 input pin for implementing switch debounce and generating an interrupt on switch press and release event. Pin RC2 is shorted to RE2 using external jumper for detecting button press and release event.
+As pin RE2 cannot be used as input pin for timer 4, pin RC2 is configured as timer 4 input pin for implementing switch debounce and generating an interrupt on switch press and release event. Pin RC2 is shorted to RE2 using external jumper.
 
 # Demo Operation
 
