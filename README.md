@@ -75,7 +75,7 @@ Following Microchip’s free IDE, compiler and graphical code generators are use
 * [MPLAB® X IDE v5.45 or newer](http://www.microchip.com/mplab/mplab-x-ide)
 * [MPLAB® XC8 Compiler v2.31 or newer](http://www.microchip.com/mplab/compilers)
 * [MPLAB® Code Configurator (MCC) v4.1.0 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
-* [MPLAB® Melody Library v1.37.14 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
+* [MPLAB® Melody Library v1.37.17 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
 * [MCC Device Libraries PIC10 / PIC12 / PIC16 / PIC18  MCUs v1.81.7 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
 * [Microchip PIC18F-Q Series Device Support 1.9.175 or newer](https://packs.download.microchip.com/)
 
