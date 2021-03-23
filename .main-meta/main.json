@@ -40,8 +40,11 @@
         "subcategories": [
             "MCC",
             [
-               "Peripherals", "DAC", "TMR2"
-            ]                			
+               "Peripherals", "DAC"
+            ],
+		 [
+               "Peripherals", "TMR2"
+            ]                                			
         ],
         "peripherals": [
             	"DAC",
