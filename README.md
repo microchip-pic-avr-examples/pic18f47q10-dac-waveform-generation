@@ -72,12 +72,12 @@ With full program and debug capabilities, the PIC18F47Q10 Curiosity Nano evaluat
 # Software Tools
 Following Microchip’s free IDE, compiler and graphical code generators are used for the application firmware development.
 
-* [MPLAB® X IDE v5.45 or newer](http://www.microchip.com/mplab/mplab-x-ide)
-* [MPLAB® XC8 Compiler v2.31 or newer](http://www.microchip.com/mplab/compilers)
-* [MPLAB® Code Configurator (MCC) v4.1.0 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
-* [MPLAB® Melody Library v1.37.17 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
-* [MCC Device Libraries PIC10 / PIC12 / PIC16 / PIC18  MCUs v1.81.7 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
-* [Microchip PIC18F-Q Series Device Support 1.9.175 or newer](https://packs.download.microchip.com/)
+* MPLAB® X IDE [v5.45 or newer](http://www.microchip.com/mplab/mplab-x-ide)
+* MPLAB® XC8 Compiler [v2.31 or newer](http://www.microchip.com/mplab/compilers)
+* MPLAB® Code Configurator (MCC) [v4.1.0 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
+* MPLAB® Melody Library [v1.37.17 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
+* MCC Device Libraries PIC10 / PIC12 / PIC16 / PIC18  MCUs [v1.81.7 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
+* Microchip PIC18F-Q Series Device Support [1.9.175 or newer](https://packs.download.microchip.com/)
 
 # Hardware Setup
 The following figures (Figure 3.1 and Figure 3.2) show the hardware connection details.

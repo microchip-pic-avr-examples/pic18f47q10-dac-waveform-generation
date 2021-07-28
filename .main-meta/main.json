@@ -4,7 +4,7 @@
     "content": {
         "metaDataVersion": "1.1.0",
         "name": "com.microchip.mcu8.mplabx.project.pic18f47q10-dac-waveform-generation",
-        "version": "2.0.1",
+        "version": "2.0.2",
         "displayName": "Waveform generation using DAC",
         "projectName": "pic18f47q10-dac-waveform-generation",
         "shortDescription": "This example demonstrates how DAC peripherals from PIC18F Q10, can be used to generate reference voltage and different signals",
@@ -38,21 +38,16 @@
         },
         "author": "Microchip",
         "subcategories": [
-            "MCC",
             [
                "Peripherals", "DAC"
-            ],
-		 [
-               "Peripherals", "TMR2"
-            ]                                			
+            ]                              			
         ],
         "peripherals": [
-            	"DAC",
-			"TMR2"
+            	"DAC"
         ],
         "keywords": [
-            "Waveform generation",
-		"Reference Voltage",
+            "Signal Generation",
+		"Voltage Reference",
 		"Melody"			
         ],
 		"additionalData": {
