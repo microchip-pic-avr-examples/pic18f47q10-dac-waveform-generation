@@ -4,27 +4,27 @@
     "content": {
         "metaDataVersion": "1.1.0",
         "name": "com.microchip.mcu8.mplabx.project.pic18f47q10-dac-waveform-generation",
-        "version": "2.0.2",
+        "version": "2.0.3",
         "displayName": "Waveform generation using DAC",
         "projectName": "pic18f47q10-dac-waveform-generation",
         "shortDescription": "This example demonstrates how DAC peripherals from PIC18F Q10, can be used to generate reference voltage and different signals",
         "ide": {
             "name": "MPLAB X",
-            "semverRange": ">=5.45.0"
+            "semverRange": ">=5.50.0"
         },
         "compiler": [
 			{
 				"name": "XC8",
-				"semverRange": "^2.31.0"
+				"semverRange": "^2.32.0"
 			}
 		],
         "dfp": {
             "name": "PIC18F-Q_DFP",
-            "semverRange": "^1.9.175"
+            "semverRange": "^1.11.185"
         },
         "configurator": {
             "name": "MCC",
-            "semverRange": ">=4.1.0"
+            "semverRange": ">=4.2.1"
         },
         "device": {
             "metaDataVersion": "1.0.0",

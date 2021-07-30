@@ -4,7 +4,7 @@
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
             <name>pic18f47q10-dac-waveform-generation</name>
-            <creation-uuid>3176bf6a-3b4c-4183-91e2-54a3a5d89e0f</creation-uuid>
+            <creation-uuid>7565e020-112a-4f59-a89b-437ba6c4c2e5</creation-uuid>
             <make-project-type>0</make-project-type>
             <c-extensions>c</c-extensions>
             <cpp-extensions/>

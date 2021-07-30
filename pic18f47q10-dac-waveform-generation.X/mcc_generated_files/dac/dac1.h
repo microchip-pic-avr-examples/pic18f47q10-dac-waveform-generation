@@ -1,23 +1,13 @@
 /**
- DAC1 Generated Driver API Header File
-
-  @Company
-    Microchip Technology Inc.
-
-  @File Name
-    dac1.h
-
-  @Summary
-    This is the generated header file for the DAC1 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
-
-  @Description
-    This Header file provides APIs.
-    
-    Generation Information :
-        Driver Version    :   2.1.0
-    The generated drivers are tested against the following:
-        Compiler          :   XC8 v2.20
-        MPLAB             :   MPLABX v5.40
+ * DAC1 Generated Driver API Header File
+ * 
+ * @file dac1.h
+ * 
+ * @defgroup  dac1 DAC1
+ * 
+ * @brief This is the generated header file for the DAC1 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+ *
+ * @version DAC1 Driver Version 2.1.0
 */
 /*
 Copyright (c) [2012-2020] Microchip Technology Inc.  
@@ -68,101 +58,27 @@ Copyright (c) [2012-2020] Microchip Technology Inc.
 */
 
 /**
-  @Summary
-    Initializes the DAC1
-
-  @Description
-    This routine initializes the DAC1.
-    This routine must be called before any other DAC1 routine is called.
-    This routine should only be called once during system initialization.
-
-  @Preconditions
-    None
-
-  @Param
-    None
-
-  @Returns
-    None
-
-  @Comment
-    
-
-  @Example
-    <code>
-    DAC1_Initialize();
-    </code>
-*/
+ * @ingroup dac1
+ * @brief  This routine initializes the DAC1 and must be called only once, before any other DAC1 routine is called.
+ * @param void
+ * @return void
+ */
 void DAC1_Initialize(void);
 
 /**
-  @Summary
-    Set Input data into DAC1.
-
-  @Description
-    This routine pass the digital input data into
-    DAC1 voltage reference control register.
-
-  @Preconditions
-    The DAC1_Initialize() routine should be called
-    prior to use this routine.
-
-  @Param
-    inputData - 8bit digital data to DAC1.
-
-  @Returns
-    None
-
-  @Example
-    <code>
-    uint8_t count=0;
-
-    DAC1_Initialize();
-
-    for(count=0; count<=30; count++)
-    {
-        DAC1_SetOutput(count);
-    }
-
-    while(1)
-    {
-    }
-    </code>
-*/
+ * @ingroup dac1
+ * @brief  his routine pass the digital input data intoDAC1 voltage reference control register.
+ * @param inputData - 8bit digital data to DAC1.
+ * @return void
+ */
 void DAC1_SetOutput(uint8_t inputData);
 
 /**
-  @Summary
-    Read input data fed to DAC1.
-
-  @Description
-    This routine reads the digital input data fed to
-    DAC1 voltage reference control register.
-
-  @Preconditions
-    The DAC1_Initialize() routine should be called
-    prior to use this routine.
-
-  @Param
-    None
-
-  @Returns
-    uint8_t inputData - digital data fed to DAC1
-
-  @Example
-    <code>
-    uint8_t count=0;
-    uint8_t inputData;
-
-    DAC1_Initialize();
-
-    inputData = DAC1_GetOutput();
-
-    while(1)
-    {
-    }
-    </code>
-*/
+ * @ingroup dac1
+ * @brief  This routine reads the digital input data fed to DAC1 voltage reference control register.
+ * @param void
+ * @return uint8_t inputData - digital data fed to DAC1
+ */
 uint8_t DAC1_GetOutput(void);
 
 #endif // DAC1_H

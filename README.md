@@ -51,7 +51,7 @@ This example generates the reference voltage at power up, and the signal output 
 
 - When the signal to be generated is Sine wave, Triangular wave, Square wave or Sawtooth wave, frequency of the generated signal is decided by the DAC register update frequency and total number of points in one cycle of the signal.
 - Timer 2 interrupt is used for updating the DAC register. 
-- Frequency of the generated signal = 1/ (total number of points in one cycle * Timer 2 period) = 1/(128 * 78.13 us) = 100 Hz.
+- Frequency of the generated signal = 1/ (total number of points in one cycle X Timer 2 period) = 1/(128 X 78.13 us) = 100 Hz.
 - For changing the frequency of the generated signal timer 2 period can be changed. 
 
 ***Note: The system clock frequency also has impact on the maximum frequency that can be generated using this method. 
@@ -72,12 +72,12 @@ With full program and debug capabilities, the PIC18F47Q10 Curiosity Nano evaluat
 # Software Tools
 Following Microchip’s free IDE, compiler and graphical code generators are used for the application firmware development.
 
-* MPLAB® X IDE [v5.45 or newer](http://www.microchip.com/mplab/mplab-x-ide)
-* MPLAB® XC8 Compiler [v2.31 or newer](http://www.microchip.com/mplab/compilers)
-* MPLAB® Code Configurator (MCC) [v4.1.0 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
-* MPLAB® Melody Library [v1.37.17 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
+* MPLAB® X IDE [v5.50 or newer](http://www.microchip.com/mplab/mplab-x-ide)
+* MPLAB® XC8 Compiler [v2.32 or newer](http://www.microchip.com/mplab/compilers)
+* MPLAB® Code Configurator (MCC) [v4.2.1 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
+* MPLAB® Melody Library [v1.84.5 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
 * MCC Device Libraries PIC10 / PIC12 / PIC16 / PIC18  MCUs [v1.81.7 or newer](https://www.microchip.com/mplab/mplab-code-configurator)
-* Microchip PIC18F-Q Series Device Support [1.9.175 or newer](https://packs.download.microchip.com/)
+* Microchip PIC18F-Q Series Device Support [1.11.185 or newer](https://packs.download.microchip.com/)
 
 # Hardware Setup
 The following figures (Figure 3.1 and Figure 3.2) show the hardware connection details.
@@ -191,7 +191,8 @@ As pin RE2 cannot be used as input pin for timer 4, pin RC2 is configured as tim
 * 	Connect the pins RE2 and RC2 using the jumper.
 * 	Connect RA2 (DAC1OUT1 Pin) to the positive terminal of the Scope (DSO/Oscilloscope) and connect GND (CNANO board ground pin) to GND terminal of scope.  
 * 	Power on the CNANO board by connecting the micro USB cable from micro USB socket (Micro USB Connector) on the CNANO board to the PC USB socket.
-*     Click on **Make and program device**.
+* 	Click on "Make and Program Device"
+
 
 ![Programming_the_device](images/Programming_the_device.png)
 

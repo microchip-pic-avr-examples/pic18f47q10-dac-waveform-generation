@@ -1,22 +1,13 @@
 /**
-  DAC1 Generated Driver File
-
-  @Company
-    Microchip Technology Inc.
-
-  @File Name
-   dac1.c
-
-  @Summary
-    This is the generated driver implementation file for the DAC1 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
-
-  @Description
-    This Source file provides implementations of the APIs.
-    Generation Information :
-        Driver Version    :   2.1.0
-    The generated drivers are tested against the following:
-        Compiler          :   XC8 v2.20
-        MPLAB             :   MPLABX v5.40
+ * DAC1 Generated Driver File
+ * 
+ * @file dac1.c
+ * 
+ * @ingroup dac1
+ * 
+ * @brief This is the generated driver implementation file for the DAC1 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+ *
+ * @version DAC1 Driver Version 2.1.0
 */
 /*
 Copyright (c) [2012-2020] Microchip Technology Inc.  
