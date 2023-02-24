@@ -1,26 +1,38 @@
 /**
- application.c for application functionalities
+ dac_application.c for application functionalities.
  
   @Company
     Microchip Technology Inc.
  
   @File Name
-    application.c
+    dac_application.c
  
   @Summary
-    This source file contains functions to generate four different waves  
+    This source file contains functions to generate four different waves.  
  
   @Description
-    This source file provides implementations for wave generation APIs.
-    Generation Information :
-        Product Revision      :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.7
-        Device                :  PIC18F47Q10
-
-    The API's are tested against the following:
-        Compiler          :  XC8 2.31 or later
-        MPLAB             :  MPLAB X 5.45
+    This source file provides implementations for wave generation APIs. 
  */
-#include <pic18.h>
+/*
+© [2023] Microchip Technology Inc. and its subsidiaries.
+
+    Subject to your compliance with these terms, you may use Microchip 
+    software and any derivatives exclusively with Microchip products. 
+    You are responsible for complying with 3rd party license terms  
+    applicable to your use of 3rd party software (including open source  
+    software) that may accompany Microchip software. SOFTWARE IS ?AS IS.? 
+    NO WARRANTIES, WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS 
+    SOFTWARE, INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT,  
+    MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT 
+    WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, 
+    INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY 
+    KIND WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF 
+    MICROCHIP HAS BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE 
+    FORESEEABLE. TO THE FULLEST EXTENT ALLOWED BY LAW, MICROCHIP?S 
+    TOTAL LIABILITY ON ALL CLAIMS RELATED TO THE SOFTWARE WILL NOT 
+    EXCEED AMOUNT OF FEES, IF ANY, YOU PAID DIRECTLY TO MICROCHIP FOR 
+    THIS SOFTWARE.
+*/
 #include "mcc_generated_files/system/system.h"
 #include "dac_application.h"
 
@@ -32,14 +44,14 @@
 #define MAX_WAVE_COUNT (5)          //Number of functionality 3 signals + 2 reference voltage  
 
 
-uint8_t dacUpdateFlag = CLEAR;
-uint8_t changeWaveformFlag = CLEAR;
+volatile uint8_t dacUpdateFlag = CLEAR;
+volatile uint8_t changeWaveformFlag = CLEAR;
 uint8_t index = POINTS;
-volatile unsigned int swcnt; //variable to handle the interrupt counts for update the signal switch
-uint16_t *LUT_ptr; //Pointer to feed the input to DAC1
+uint8_t swcnt; //variable to handle the interrupt counts for update the signal switch
+uint8_t *LUT_ptr; //Pointer to feed the input to DAC1
 
 // array to generate the sine wave signal of 250 HZ, 3.3V peak to peak
-const uint16_t sineLUT[] = {
+const uint8_t sineLUT[] = {
     0x10, 0x10, 0x11, 0x12, 0x13, 0x13, 0x14, 0x15,
     0x15, 0x16, 0x17, 0x17, 0x18, 0x19, 0x19, 0x1a,
     0x1a, 0x1b, 0x1b, 0x1c, 0x1c, 0x1d, 0x1d, 0x1e,
@@ -59,7 +71,7 @@ const uint16_t sineLUT[] = {
 };
 
 // array to generate the square wave signal of 250 HZ, 3.3V peak to peak
-const uint16_t squareLUT[] = {
+const uint8_t squareLUT[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -79,7 +91,7 @@ const uint16_t squareLUT[] = {
 };
 
 //array to generate the triangle wave of 250 HZ, 3.3V peak to peak
-const uint16_t triangleLUT[] = {
+const uint8_t triangleLUT[] = {
     0x0, 0x1, 0x1, 0x2, 0x2, 0x3, 0x3, 0x4,
     0x4, 0x5, 0x5, 0x6, 0x6, 0x7, 0x7, 0x8,
     0x8, 0x9, 0x9, 0xa, 0xa, 0xb, 0xb, 0xc,
@@ -99,7 +111,7 @@ const uint16_t triangleLUT[] = {
 };
 
 //array to generate the sawtooth wave of 250 HZ, 3.3V peak to peak
-const uint16_t sawtoothLUT[] = {
+const uint8_t sawtoothLUT[] = {
     0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x01,
     0x02, 0x02, 0x02, 0x02, 0x03, 0x03, 0x03, 0x03,
     0x04, 0x04, 0x04, 0x04, 0x05, 0x05, 0x05, 0x05,
@@ -118,12 +130,12 @@ const uint16_t sawtoothLUT[] = {
     0x1e, 0x1e, 0x1e, 0x1e, 0x1f, 0x1f, 0x1f, 0x1f
 };
 
-const uint16_t setRefVol1[] = {REFERENCE_VOL1};
-const uint16_t setRefVol2[] = {REFERENCE_VOL2};
+const uint8_t setRefVol1[] = {REFERENCE_VOL1};
+const uint8_t setRefVol2[] = {REFERENCE_VOL2};
 
-const uint16_t defaultLUT[] = {0x1f};
+const uint8_t defaultLUT[] = {0x1f};
 
-const uint16_t *signals[] = {
+const uint8_t *signals[] = {
     setRefVol1,
     setRefVol2,
     sineLUT,
@@ -143,10 +155,28 @@ typedef enum  {
     SAWTOOTH_WAVE 
 }e_signal;
 
-
 void ChangeWave(void);    
 void UpdateDac(void);
 
+/**
+  @Summary
+    Generate signal using DAC1.
+
+  @Description
+    This routine call the signal switching routine 
+ and this routine feed the input digital data in to DAC1 for generate the switched signal 
+
+  @Preconditions
+    The WaveGenerator() routine should be called
+    prior to use this routine.
+
+  @Param
+    inputData - void.
+
+  @Returns
+    None
+
+ */
 void WaveGenerator(void)
 {
     if (changeWaveformFlag == SET)
@@ -183,9 +213,9 @@ void WaveGenerator(void)
 
 /*
   @Description
- Check if its time to change the DAC output for number of points to generate different waveforms and increment the LUT pointer
+    Check if its time to change the DAC output for number of points to generate different waveforms and increment the LUT pointer
   @Preconditions
-     None
+    None
   @Param
     None
   @Returns
@@ -203,7 +233,7 @@ void UpdateDac(void)
         if (index <= 0  )
         {
             index = POINTS;
-            LUT_ptr = (uint16_t*) signals[swcnt];
+            LUT_ptr = (uint8_t *)signals[swcnt];
         }
         dacUpdateFlag = CLEAR;
     }
@@ -211,7 +241,7 @@ void UpdateDac(void)
 
 /**
    @Description
-  switch the signals from one signal to another after switch press event 
+  Switch the signals from one signal to another after switch press event 
   @Preconditions
     The changeWaveformFlag should be set prior to use this routine.
   @Param
@@ -230,20 +260,50 @@ void ChangeWave(void)
     {
         swcnt = 0;// point to the first waveform to be generated   
     }
-    LUT_ptr = (uint16_t*) signals[swcnt]; // LUT pointer = first point in the LUT of corresponding signal
+    LUT_ptr = (uint8_t *)signals[swcnt]; // LUT pointer = first point in the LUT of corresponding signal
     index = POINTS; // initialize to number of points in the waveform
 }
 
+/*
+  @Description
+   Initialize LUT pointer for generating first waveform at power up
+  @Preconditions
+    None
+  @Param
+    None
+  @Returns
+    None      
+ */  
 void InitWaveform(void) 
 {
-    LUT_ptr = (uint16_t*) signals[0];    
+    LUT_ptr = (uint8_t *)signals[0];    
 }
 
+/*
+  @Description
+    Custom user interrupt handler routine for IOC on switch press
+  @Preconditions
+    None
+  @Param
+    None
+  @Returns
+    None      
+ */
 void UserInterruptHandler(void) 
 {
     changeWaveformFlag = SET;   
 }
 
+/*
+  @Description
+    Interrupt handler routine for timer overflow
+  @Preconditions
+    None
+  @Param
+    None
+  @Returns
+    None      
+ */
 void TmrUserInterruptHandler(void) 
 {
     //the period of the timer and number of points in the waveform will determine the frequency of the generated waveform

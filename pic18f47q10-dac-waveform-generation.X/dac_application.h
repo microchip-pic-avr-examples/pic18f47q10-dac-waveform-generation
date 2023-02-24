@@ -1,92 +1,33 @@
-/* 
- * File:   application.h
- * Author: I20946
- *
- * Created on July 30, 2019, 2:51 PM
- */
+/*
+© [2023] Microchip Technology Inc. and its subsidiaries.
 
+    Subject to your compliance with these terms, you may use Microchip 
+    software and any derivatives exclusively with Microchip products. 
+    You are responsible for complying with 3rd party license terms  
+    applicable to your use of 3rd party software (including open source  
+    software) that may accompany Microchip software. SOFTWARE IS ?AS IS.? 
+    NO WARRANTIES, WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS 
+    SOFTWARE, INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT,  
+    MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT 
+    WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, 
+    INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY 
+    KIND WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF 
+    MICROCHIP HAS BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE 
+    FORESEEABLE. TO THE FULLEST EXTENT ALLOWED BY LAW, MICROCHIP?S 
+    TOTAL LIABILITY ON ALL CLAIMS RELATED TO THE SOFTWARE WILL NOT 
+    EXCEED AMOUNT OF FEES, IF ANY, YOU PAID DIRECTLY TO MICROCHIP FOR 
+    THIS SOFTWARE.
+*/
+#ifndef DAC_APPLICATION_H
+#define	DAC_APPLICATION_H
 
-#ifndef APPLICATION_H
-#define	APPLICATION_H
+void WaveGenerator(void);
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+void UserInterruptHandler(void);
 
-    /**
-      @Summary
-        Generate signal using DAC1.
+void TmrUserInterruptHandler(void);
 
-      @Description
-        This routine call the signal switching routine 
-     and this routine feed the input digital data in to DAC1 for generate the switched signal 
+void InitWaveform(void);
 
-      @Preconditions
-        The WaveGenerator() routine should be called
-        prior to use this routine.
-
-      @Param
-        inputData - void.
-
-      @Returns
-        None
-
-      @Example
-        <code>
-
-        while(1)
-        {
-         WaveGenerator();
-        }
-        </code>
-     */
-    void WaveGenerator(void);
-    
-
-
-    /*
-      @Description
-        Custom user interrupt handler routine for IOC on switch press
-      @Preconditions
-         None
-      @Param
-        None
-      @Returns
-        None      
-    */
-    void UserInterruptHandler(void);
-    
-    /*
-      @Description
-        interrupt handler routine for timer overflow
-      @Preconditions
-         None
-      @Param
-        None
-      @Returns
-        None      
-    */ 
-    void TmrUserInterruptHandler(void);
-
-    /*
-      @Description
-     initialize LUT pointer for generating first waveform at power up
-      @Preconditions
-         None
-      @Param
-        None
-      @Returns
-        None      
-    */    
-    void InitWaveform(void);
-    
-
-    
-
-
-#ifdef	__cplusplus
-}
-#endif
-
-#endif	/* APPLICATION_H */
+#endif	/* DAC_APPLICATION_H */
 
